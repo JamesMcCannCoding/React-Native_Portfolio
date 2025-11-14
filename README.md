@@ -1,50 +1,29 @@
-# Welcome to your Expo app 👋
+📱 React Native Portfolio App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This project was developed while I was learning mobile app development using React Native. It was submitted as part of my assessment for IFQ666 – Web and Mobile App Development.
 
-## Get started
+📌 Project Overview
 
-1. Install dependencies
+The goal of the assignment was to create a small, modern Portfolio app for a Software Developer that works seamlessly across:
 
-   ```bash
-   npm install
-   ```
+🌐 Web
 
-2. Start the app
+📱 iOS
 
-   ```bash
-   npx expo start
-   ```
+🤖 Android
 
-In the output, you'll find options to open the app in a
+The project includes several core React Native concepts and features, such as:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+React Hooks
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+API integration
 
-## Get a fresh project
+Reusable components
 
-When you're ready, run:
+Cross-platform styling
 
-```bash
-npm run reset-project
-```
+Basic animations and interactive UI elements
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+🎯 Purpose
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project showcases how React Native can be used to build a visually appealing and functional portfolio app that performs well on multiple platforms, using only one codebase.
