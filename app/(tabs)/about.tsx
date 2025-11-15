@@ -133,10 +133,9 @@ export default function TabTwoScreen() {
 const getStyles = (isSmallScreen: boolean) => StyleSheet.create({
   headerImage: {
     width: '100%',
-    height: isSmallScreen ? 200 : 250,
+    height: isSmallScreen ? 250 : 250,
   },
 
-  // NEW STYLE: Layout properties remain, but visual properties (background/shadow) are removed.
   introSection: {
     padding: isSmallScreen ? 15 : 20,
     marginVertical: 15,
@@ -144,11 +143,10 @@ const getStyles = (isSmallScreen: boolean) => StyleSheet.create({
     width: '100%',
     maxWidth: 900,
     alignSelf: 'center',
-    // Note: backgroundColor, shadow, and elevation are intentionally missing
   },
 
   sectionCard: {
-    backgroundColor: '#181818',
+    backgroundColor: '#151718',
     padding: isSmallScreen ? 15 : 20,
     marginVertical: 15,
     borderRadius: 20,
@@ -175,10 +173,11 @@ const getStyles = (isSmallScreen: boolean) => StyleSheet.create({
   },
 
   listContainer: {
-    marginTop: 10,
-    marginLeft: 5,
-    // Ensure the background matches the section card background
-    backgroundColor: '#181818', 
+    marginTop: 0,
+    marginLeft: 0,
+    backgroundColor: '#151718',
+    paddingHorizontal: isSmallScreen ? 5 : 10, 
+    paddingVertical: 5, 
   },
 
   listItem: {

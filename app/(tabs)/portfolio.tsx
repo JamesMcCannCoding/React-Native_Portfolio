@@ -108,7 +108,7 @@ export default function TabFourScreen() {
 const getStyles = (isSmallScreen: boolean) => StyleSheet.create({
   headerImage: {
     width: '100%',
-    height: isSmallScreen ? 200 : 250,
+    height: isSmallScreen ? 250 : 250,
   },
 
   titleContainer: {
