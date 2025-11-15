@@ -3,9 +3,13 @@ import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { Collapsible } from '@/components/ui/collapsible';
 import { Fonts } from '@/constants/theme';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 export default function TabTwoScreen() {
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 500;
+  const styles = getStyles(isSmallScreen);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#111', dark: '#111' }}
@@ -18,8 +22,8 @@ export default function TabTwoScreen() {
       }
     >
 
-      {/* ---- Title Section ---- */}
-      <View style={styles.sectionCard}>
+      {/* Changed style from sectionCard to introSection to remove the box */}
+      <View style={styles.introSection}>
         <ThemedText type="title" style={styles.title}>
           About Me
         </ThemedText>
@@ -29,7 +33,6 @@ export default function TabTwoScreen() {
         </ThemedText>
       </View>
 
-      {/* ---- Get to know me ---- */}
       <View style={styles.sectionCard}>
         <Collapsible title="Get to know me">
           <View style={styles.listContainer}>
@@ -50,7 +53,6 @@ export default function TabTwoScreen() {
         </Collapsible>
       </View>
 
-      {/* ---- Education ---- */}
       <View style={styles.sectionCard}>
         <Collapsible title="Education">
           <View style={styles.listContainer}>
@@ -65,11 +67,10 @@ export default function TabTwoScreen() {
         </Collapsible>
       </View>
 
-      {/* ---- Languages ---- */}
       <View style={styles.sectionCard}>
         <Collapsible title="Languages I can speak">
           <View style={styles.listContainer}>
-            
+
             <Text style={styles.listHeader}>Front End</Text>
             {['HTML', 'CSS', 'JavaScript', 'React', 'Python'].map((item, idx) => (
               <Text key={idx} style={styles.listItem}>• {item}</Text>
@@ -104,7 +105,6 @@ export default function TabTwoScreen() {
         </Collapsible>
       </View>
 
-      {/* ---- Experience ---- */}
       <View style={styles.sectionCard}>
         <Collapsible title="Experience">
           <View style={styles.listContainer}>
@@ -130,30 +130,40 @@ export default function TabTwoScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (isSmallScreen: boolean) => StyleSheet.create({
   headerImage: {
     width: '100%',
-    height: 250,
+    height: isSmallScreen ? 200 : 250,
   },
 
-  /* Main Card Container */
-  sectionCard: {
-    backgroundColor: '#181818',
-    padding: 20,
+  // NEW STYLE: Layout properties remain, but visual properties (background/shadow) are removed.
+  introSection: {
+    padding: isSmallScreen ? 15 : 20,
     marginVertical: 15,
     borderRadius: 20,
-    width: '90%',
+    width: '100%',
+    maxWidth: 900,
+    alignSelf: 'center',
+    // Note: backgroundColor, shadow, and elevation are intentionally missing
+  },
+
+  sectionCard: {
+    backgroundColor: '#181818',
+    padding: isSmallScreen ? 15 : 20,
+    marginVertical: 15,
+    borderRadius: 20,
+    width: '100%',
     maxWidth: 900,
     alignSelf: 'center',
     shadowColor: '#00ffd1',
     shadowOpacity: 0.15,
     shadowRadius: 10,
+    elevation: 5,
   },
 
-  /* Titles */
   title: {
     fontFamily: Fonts.rounded,
-    fontSize: 28,
+    fontSize: isSmallScreen ? 24 : 28,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 8,
@@ -161,33 +171,33 @@ const styles = StyleSheet.create({
 
   subtitle: {
     color: '#00FFD1',
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
   },
 
-  /* Lists */
   listContainer: {
     marginTop: 10,
     marginLeft: 5,
+    // Ensure the background matches the section card background
+    backgroundColor: '#181818', 
   },
 
   listItem: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     marginBottom: 6,
   },
 
   listHeader: {
     color: '#00FFD1',
-    fontSize: 18,
+    fontSize: isSmallScreen ? 16 : 18,
     marginTop: 15,
     marginBottom: 5,
     fontWeight: 'bold',
   },
 
-  /* Links */
   link: {
     color: '#00FFD1',
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     marginBottom: 8,
     marginTop: 4,
   },

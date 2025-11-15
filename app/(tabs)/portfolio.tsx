@@ -4,9 +4,13 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Fonts } from '@/constants/theme';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, useWindowDimensions } from 'react-native';
 
 export default function TabFourScreen() {
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 500;
+  const styles = getStyles(isSmallScreen);
+
   const [repos, setRepos] = useState<any[]>([]);
 
   useEffect(() => {
@@ -36,14 +40,12 @@ export default function TabFourScreen() {
         />
       }
     >
-      {/* Page Title */}
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={styles.pageTitle}>
           Portfolio
         </ThemedText>
       </ThemedView>
 
-      {/* Showcase Projects Section */}
       <ThemedView style={styles.sectionCard}>
         <ThemedText style={styles.sectionTitle}>
           Showcase Projects
@@ -77,16 +79,14 @@ export default function TabFourScreen() {
         </View>
       </ThemedView>
 
-      <View style={{ width: '90%', maxWidth: 900, alignSelf: 'center', marginVertical: 15 }}>
+      <View style={styles.gitHubTitleContainer}>
         <ThemedText style={styles.sectionTitle}>GitHub Projects</ThemedText>
       </View>
 
-      <FlatList
-        data={repos}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 50 }}
-        renderItem={({ item }) => (
-          <ThemedView style={styles.repoCard}>
+      {/* FIX: Replaced FlatList with a standard View and map() to avoid nesting VirtualizedLists */}
+      <View style={styles.repoListContainer}>
+        {repos.map((item) => (
+          <ThemedView key={item.id.toString()} style={styles.repoCard}>
             <ThemedText style={styles.repoTitle}>{item.name}</ThemedText>
 
             {item.description ? (
@@ -99,79 +99,92 @@ export default function TabFourScreen() {
               <ThemedText type="link">View on GitHub</ThemedText>
             </ExternalLink>
           </ThemedView>
-        )}
-      />
+        ))}
+      </View>
     </ParallaxScrollView>
   );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (isSmallScreen: boolean) => StyleSheet.create({
   headerImage: {
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+    width: '100%',
+    height: isSmallScreen ? 200 : 250,
   },
 
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 10,
+    marginBottom: isSmallScreen ? 5 : 10,
   },
 
   pageTitle: {
     fontFamily: Fonts.rounded,
     color: '#fff',
-    fontSize: 32,
+    fontSize: isSmallScreen ? 28 : 32,
   },
 
-  /* Shared Card Style (matching index.tsx) */
   sectionCard: {
     backgroundColor: '#181818',
-    padding: 20,
+    padding: isSmallScreen ? 15 : 20,
     marginVertical: 15,
     borderRadius: 20,
-    width: '90%',
+    width: '100%',
     maxWidth: 900,
     alignSelf: 'center',
     shadowColor: '#00FFD1',
     shadowOpacity: 0.15,
     shadowRadius: 10,
+    // Add elevation for Android shadow support
+    elevation: 5,
+  },
+
+  gitHubTitleContainer: {
+    width: '90%', 
+    maxWidth: 900, 
+    alignSelf: 'center', 
+    marginVertical: isSmallScreen ? 10 : 15,
   },
 
   sectionTitle: {
     color: '#fff',
-    fontSize: 22,
+    fontSize: isSmallScreen ? 20 : 22,
     fontWeight: 'bold',
     marginBottom: 8,
   },
 
   listItem: {
-    marginBottom: 12,
+    marginBottom: isSmallScreen ? 8 : 12,
   },
 
   listText: {
     color: '#ccc',
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     marginBottom: 4,
   },
+  
+  // New container style to ensure content scrolling is still smooth
+  repoListContainer: {
+    paddingBottom: 50,
+  },
 
-  /* Repo Card Style (same as sectionCard) */
   repoCard: {
     backgroundColor: '#181818',
-    padding: 20,
-    marginVertical: 10,
+    padding: isSmallScreen ? 15 : 20,
+    marginVertical: 8,
     borderRadius: 20,
-    width: '90%',
+    width: '100%',
     maxWidth: 900,
     alignSelf: 'center',
     shadowColor: '#00FFD1',
     shadowOpacity: 0.15,
     shadowRadius: 10,
+    // Add elevation for Android shadow support
+    elevation: 5,
   },
 
   repoTitle: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: isSmallScreen ? 16 : 18,
     fontWeight: 'bold',
     marginBottom: 6,
   },
@@ -179,5 +192,6 @@ const styles = StyleSheet.create({
   repoDescription: {
     color: '#ccc',
     marginBottom: 10,
+    fontSize: isSmallScreen ? 13 : 15,
   },
 });

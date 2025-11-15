@@ -3,18 +3,23 @@ import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Ionicons } from '@expo/vector-icons'; // cross-platform icons
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
-return (
+  // Force dark theme colors
+  const darkColors = Colors['dark'];
+
+  return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: darkColors.tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          backgroundColor: darkColors.background,
+          borderTopColor: darkColors.border,
+        },
       }}
     >
       <Tabs.Screen
@@ -24,6 +29,7 @@ return (
           tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
         }}
       />
+      
       <Tabs.Screen
         name="about"
         options={{
@@ -31,6 +37,7 @@ return (
           tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
         }}
       />
+
       <Tabs.Screen
         name="resume"
         options={{
@@ -38,6 +45,7 @@ return (
           tabBarIcon: ({ color, size }) => <Ionicons name="briefcase" size={size} color={color} />,
         }}
       />
+
       <Tabs.Screen
         name="portfolio"
         options={{

@@ -1,14 +1,24 @@
 import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { Image, Linking, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Linking, Platform, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 export default function HomeScreen() {
+  // 1. Use useWindowDimensions to get real-time screen dimensions
+  const { width } = useWindowDimensions();
+  
+  // 2. Define a breakpoint (e.g., screens narrower than 500px are considered 'small')
+  const isSmallScreen = width < 500;
+
+  // 3. Get styles dynamically based on the screen size
+  const styles = getStyles(isSmallScreen);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#111', dark: '#111' }}
       headerImage={
         <Image
-          source={require('../../assets/images/Space.jpg')}
+          // Assuming this path is correct for your project structure
+          source={require('../../assets/images/Space.jpg')} 
           style={styles.headerImage}
           resizeMode="cover"
         />
@@ -51,26 +61,28 @@ export default function HomeScreen() {
 
         <View style={styles.mapContainer}>
           {Platform.OS === 'web' ? (
+            // Note: In React Native Web, using an iframe directly often works better
             <iframe
               src="https://www.openstreetmap.org/export/embed.html?bbox=153.02%2C-27.48%2C153.03%2C-27.47&layer=mapnik&marker=-27.4778%2C153.0281"
               style={{
                 border: 0,
-                width: 250,
-                height: 250,
+                width: isSmallScreen ? 200 : 250, // Responsive map size
+                height: isSmallScreen ? 200 : 250, // Responsive map size
                 borderRadius: 15,
                 boxShadow: '0 0 10px rgba(0, 255, 255, 0.4)',
               }}
               loading="lazy"
             ></iframe>
           ) : (
+            // For native mobile (iOS/Android), use WebView
             <WebView
               source={{
                 uri:
                   'https://www.openstreetmap.org/export/embed.html?bbox=153.02%2C-27.48%2C153.03%2C-27.47&layer=mapnik&marker=-27.4778%2C153.0281',
               }}
               style={{
-                width: 250,
-                height: 250,
+                width: isSmallScreen ? 200 : 250, // Responsive map size
+                height: isSmallScreen ? 200 : 250, // Responsive map size
                 borderRadius: 15,
                 overflow: 'hidden',
               }}
@@ -82,24 +94,29 @@ export default function HomeScreen() {
     </ParallaxScrollView>
   );
 }
-const styles = StyleSheet.create({
+
+// 4. Create a function to generate the StyleSheet dynamically
+const getStyles = (isSmallScreen: boolean) => StyleSheet.create({
   headerImage: {
     width: '100%',
-    height: 250,
+    height: isSmallScreen ? 200 : 250,
   },
 
   /* Card Container for Each Section */
   sectionCard: {
     backgroundColor: '#181818',
-    padding: 20,
+    // Reduced padding for small screens
+    padding: isSmallScreen ? 15 : 20, 
     marginVertical: 15,
     borderRadius: 20,
-    width: '90%',
+    width: '100%',
     maxWidth: 900,
     alignSelf: 'center',
     shadowColor: '#00ffd1',
     shadowOpacity: 0.15,
     shadowRadius: 10,
+    // Add elevation for Android shadow support
+    elevation: 5, 
   },
 
   /* Profile Row */
@@ -111,7 +128,7 @@ const styles = StyleSheet.create({
 
   textSection: {
     flex: 1,
-    paddingRight: 20,
+    paddingRight: isSmallScreen ? 10 : 20,
   },
 
   imageSection: {
@@ -120,56 +137,64 @@ const styles = StyleSheet.create({
 
   introText: {
     color: '#00FFD1',
-    fontSize: 16,
+    // Responsive Font Size adjustment
+    fontSize: isSmallScreen ? 14 : 16, 
     marginBottom: 5,
     textTransform: 'uppercase',
   },
 
   name: {
     color: '#fff',
-    fontSize: 34,
+    // Responsive Font Size adjustment (the largest text)
+    fontSize: isSmallScreen ? 28 : 34, 
     fontWeight: 'bold',
     marginBottom: 8,
   },
 
   role: {
     color: '#00FFD1',
-    fontSize: 18,
+    // Responsive Font Size adjustment
+    fontSize: isSmallScreen ? 16 : 18, 
     fontWeight: '600',
     marginBottom: 15,
   },
 
   button: {
     backgroundColor: '#00FFD1',
-    paddingVertical: 12,
-    paddingHorizontal: 25,
+    // Reduced button padding
+    paddingVertical: isSmallScreen ? 10 : 12, 
+    paddingHorizontal: isSmallScreen ? 20 : 25, 
     borderRadius: 25,
     alignSelf: 'flex-start',
   },
 
   buttonText: {
     color: '#111',
-    fontSize: 16,
+    // Responsive Font Size adjustment
+    fontSize: isSmallScreen ? 14 : 16, 
     fontWeight: 'bold',
   },
 
   avatar: {
-    width: 150,
-    height: 150,
+    // Responsive Avatar Size
+    width: isSmallScreen ? 120 : 150, 
+    height: isSmallScreen ? 120 : 150,
     borderRadius: 100,
   },
 
   /* Location Section */
   sectionTitle: {
     color: '#fff',
-    fontSize: 22,
+    // Responsive Font Size adjustment
+    fontSize: isSmallScreen ? 20 : 22, 
     fontWeight: 'bold',
     marginBottom: 8,
   },
 
   sectionSubtitle: {
     color: '#00FFD1',
-    fontSize: 16,
+    // Responsive Font Size adjustment
+    fontSize: isSmallScreen ? 14 : 16, 
     marginBottom: 15,
   },
 
