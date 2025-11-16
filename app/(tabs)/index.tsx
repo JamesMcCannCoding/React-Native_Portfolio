@@ -1,4 +1,5 @@
 import ParallaxScrollView from '@/components/parallax-scroll-view';
+import Geolocation from '@react-native-community/geolocation';
 import React, { useEffect, useMemo, useState } from 'react'; // Import useEffect
 import { Alert, Image, Linking, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -360,29 +361,59 @@ export default function HomeScreen() {
   const [userLocation, setUserLocation] = useState<UserLocation>({ latitude: null, longitude: null });
 
   // Function to get user location
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
+const getUserLocation = () => {
+    // ----------------------------------------------------
+    // --- WEB Implementation (using navigator.geolocation)
+    // ----------------------------------------------------
+    if (Platform.OS === 'web') {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setUserLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+            console.log('User Location (Web):', position.coords);
+          },
+          (error) => {
+            console.error('Error fetching user location (Web):', error);
+            Alert.alert("Geolocation Error", `Could not retrieve your location. Error code ${error.code}: ${error.message}`);
+          },
+          // Increase timeout slightly for better reliability
+          { enableHighAccuracy: true, timeout: 30000, maximumAge: 1000 } 
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    } 
+    // ----------------------------------------------------
+    // --- MOBILE Implementation (using Geolocation module)
+    // ----------------------------------------------------
+    else {
+      // For mobile (iOS/Android/Expo), use the @react-native-community/geolocation package
+      Geolocation.getCurrentPosition(
         (position) => {
           setUserLocation({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
-          console.log('User Location:', position.coords);
+          console.log('User Location (Mobile):', position.coords);
         },
         (error) => {
-          console.error('Error fetching user location:', error);
-          Alert.alert("Geolocation Error", "Could not retrieve your location. Check your browser permissions.");
+          console.error('Error fetching user location (Mobile):', error);
+          // Error codes: 1=PERMISSION_DENIED, 2=POSITION_UNAVAILABLE, 3=TIMEOUT
+          Alert.alert("Geolocation Error", `Could not retrieve your location. Error code ${error.code}: ${error.message}`);
+          setUserLocation({ latitude: null, longitude: null }); // Ensure state is reset on error
         },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        // IMPORTANT: Use higher timeout for mobile devices to acquire GPS lock
+        { enableHighAccuracy: true, timeout: 30000, maximumAge: 1000, } 
       );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
     }
   };
 
   useEffect(() => {
-    if (Platform.OS === 'web' && userLocation.latitude === null) {
+    // We only attempt to get location if it hasn't been set yet
+    if (userLocation.latitude === null) {
       getUserLocation();
     }
   }, [userLocation.latitude]);

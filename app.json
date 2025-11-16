@@ -10,14 +10,14 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      //  CONFIGURATION FOR MAILTO SCHEME
       "infoPlist": {
         "LSApplicationQueriesSchemes": [
           "mailto",
           "tel",
           "sms",
           "https"
-        ]
+        ],
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to display your position on the map and calculate distance from QUT." 
       }
     },
     "android": {
@@ -28,7 +28,12 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      // Android permissions for location access
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "output": "static",
